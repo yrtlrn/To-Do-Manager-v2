@@ -55,17 +55,20 @@ const App = () => {
       <motion.h1 variants={h1Variant}>
         To-Do Manager
       </motion.h1>
+
       <motion.div variants={childrenVarient}>
-        <NewTask />
+        <NewTask taskList={taskList} setTaskList={setTaskList} />
       </motion.div>
+      
       <motion.div variants={childrenVarient}>
         <TimerDisplay timer={timer} />
       </motion.div>
+      
       <motion.div
         variants={childrenVarient}
         className="flex justify-center w-full"
       >
-        <TasksList taskList={taskList} />
+        <TasksList taskList={taskList} setTaskList={setTaskList} />
       </motion.div>
     </motion.main>
   );

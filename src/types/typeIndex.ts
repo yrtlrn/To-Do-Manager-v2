@@ -1,6 +1,6 @@
 type taskType = {
-  task: String;
-  completed: Boolean;
+  task: string;
+  completed: boolean;
 };
 
 
