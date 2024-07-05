@@ -1,16 +1,5 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { taskType } from "../types/typeIndex";
-
-const liVariants = {
-  default: {
-    scale: 1.2,
-    originX: 0,
-  },
-  hover: {
-    scale: 1.5,
-    originX: 0,
-  },
-};
 
 const TasksList = ({
   taskList,
@@ -36,12 +25,7 @@ const TasksList = ({
     }
   };
 
-  const deleteTask = (
-    taskName: string,
-    e: React.MouseEvent<HTMLSpanElement, MouseEvent>
-  ) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const deleteTask = (taskName: string) => {
     const find = taskList.find(
       (task) => task.task === taskName
     );
@@ -51,48 +35,52 @@ const TasksList = ({
       const index = newTasks.indexOf(find);
       newTasks.splice(index, 1);
       setTaskList(newTasks);
-      console.log(taskList)
     }
   };
 
   return (
-    <section className="w-[80%] md:w-[70%] my-5">
+    <section className="w-[80%]  my-5">
       {taskList.length > 0 ? (
-        <ul className="list-none">
-          {taskList.map((task, index) => (
-            <motion.li
-              className="grid items-center grid-cols-[0fr,1fr,1fr,1fr] grid-rows-1 gap-2 p-3 hover:bg-slate-300"
-              initial={"default"}
-              whileHover={"hover"}
-              key={index}
-            >
-              <input
-                type="checkbox"
-                className="w-5 h-5 focus:ring-red-200 checked:bg-red-500 checked:accent-red-500 hover:cursor-pointer"
-                checked={task.completed}
-                onChange={(e) =>
-                  checkboxChanged(e, task.task)
-                }
-              />
-              <motion.span
-                className={` col-span-2 text-r-xl ${
-                  task.completed && "line-through"
-                }`}
-                variants={liVariants}
+        <ul className="flex flex-col gap-5">
+          <AnimatePresence mode="popLayout">
+            {taskList.map((taskObj) => (
+              <motion.li
+                key={taskObj.task}
+                className="flex items-center justify-around gap-2 p-3 group hover:bg-secondary hover:dark:bg-dark_secondary/50"
+                layout
+                initial={{ scale: 0.8, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{
+                  scale: 0.8,
+                  opacity: 0,
+                }}
+                transition={{ type: "spring" }}
               >
-                {task.task}
-              </motion.span>
-              <span
-                className="flex justify-end material-symbols-outlined text-r-3xl hover:cursor-pointer"
-                onClick={(e) => deleteTask(task.task,e)}
-              >
-                delete
-              </span>
-            </motion.li>
-          ))}
+                <input
+                  type="checkbox"
+                  className="w-5 h-5 checked:accent-accent checked:dark:accent-dark_accent hover:cursor-pointer accent-red-500"
+                  checked={taskObj.completed}
+                  onChange={(e) =>
+                    checkboxChanged(e, taskObj.task)
+                  }
+                />
+                <p className="text-white text-r-xl group-hover:scale-[1.5] transition duration-200">
+                  {taskObj.task}
+                </p>
+                <button
+                  className="text-r-2xl text-accent dark:text-dark_accent"
+                  onClick={() => {
+                    deleteTask(taskObj.task);
+                  }}
+                >
+                  <i className="fa-solid fa-trash" />
+                </button>
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
       ) : (
-        <div className="flex justify-center text-r-3xl">
+        <div className="flex justify-center text-r-3xl text-text dark:text-dark_text">
           No Tasks
         </div>
       )}
