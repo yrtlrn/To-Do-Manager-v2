@@ -12,6 +12,9 @@
         font-weight: 100;
         @apply text-r-6xl font-bold text-text dark:text-dark_text
     }
+    html {
+      scroll-behavior: smooth
+    }
 }
 
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import NewTask from "./components/NewTask";
 import TimerDisplay from "./components/TimerDisplay";
 import TasksList from "./components/TasksList";
@@ -31,12 +31,25 @@ const childrenVarient = {
 };
 
 const App = () => {
-  const [timer, setTimer] = useState("00:00");
-  const [taskList, setTaskList] = useState<taskType[]>([
-    // { task: "Do Dishes", completed: false },
-    // {  task: "Mow Lawn", completed: false },
-    // {  task: "Sky Diving", completed: false },
-  ]);
+  const [taskList, setTaskList] = useState<taskType[]>([]);
+
+  // Alert On Refresh
+  useEffect(() => {
+    const uploadCallBack = (e: { preventDefault: () => void; returnValue: string; }) => {
+      if (e) {
+        e.preventDefault();
+        e.returnValue = "";
+        return "";
+      }
+    };
+    window.addEventListener("beforeunload", uploadCallBack);
+    return () =>
+      window.removeEventListener(
+        "beforeunload",
+        uploadCallBack
+      );
+  }, []);
+
   return (
     <motion.main
       variants={containerVariant}
@@ -70,7 +83,7 @@ const App = () => {
       </motion.div>
 
       <motion.div variants={childrenVarient}>
-        <TimerDisplay timer={timer} />
+        <TimerDisplay />
       </motion.div>
 
       <motion.div
