@@ -4,6 +4,7 @@ const TimerDisplay = () => {
   const [timer, setTimer] = useState(0);
   const [timerGoing, setTimerGoing] = useState(false);
 
+  
   useEffect(() => {
     const counter = setInterval(function () {
       if (timerGoing) {
