@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import NewTask from "./components/NewTask";
 import TimerDisplay from "./components/TimerDisplay";
 import TasksList from "./components/TasksList";
@@ -33,22 +33,6 @@ const childrenVarient = {
 const App = () => {
   const [taskList, setTaskList] = useState<taskType[]>([]);
 
-  // Alert On Refresh
-  useEffect(() => {
-    const uploadCallBack = (e: { preventDefault: () => void; returnValue: string; }) => {
-      if (e) {
-        e.preventDefault();
-        e.returnValue = "";
-        return "";
-      }
-    };
-    window.addEventListener("beforeunload", uploadCallBack);
-    return () =>
-      window.removeEventListener(
-        "beforeunload",
-        uploadCallBack
-      );
-  }, []);
 
   return (
     <motion.main
@@ -94,6 +78,7 @@ const App = () => {
           taskList={taskList}
           setTaskList={setTaskList}
         />
+        
       </motion.div>
     </motion.main>
   );

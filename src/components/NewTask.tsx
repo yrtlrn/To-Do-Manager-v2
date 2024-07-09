@@ -12,7 +12,6 @@ const NewTask = ({
 }) => {
   const [newTask, setNewTask] = useState("");
   const [showError, setShowError] = useState(false);
-  const taskCount = useRef(0);
 
   const addNewTask = () => {
     if (newTask) {
@@ -25,11 +24,9 @@ const NewTask = ({
         return;
       } else {
         setShowError(false);
-        taskCount.current++;
         setTaskList((prev) => [
           ...prev,
           {
-            no: taskCount.current,
             task: newTask,
             completed: false,
           },
